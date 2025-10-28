@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="app-container">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Chats</div>
+        </div>
+        <button class="new-chat-btn" id="newChatBtn">+ New Chat</button>
+        <div class="chat-history" id="chatHistory">
+            {% for c in chats %}
+                <div class="chat-item{% if c.active %} active{% endif %}" data-chat-id="{{ c.id }}">
+                    <span class="chat-name" data-action="activate" title="{{ c.summary }}">{{ c.summary }}</span>
+                    <button class="rename-btn" data-action="rename" title="Rename">✏️</button>
+                    <button class="delete-btn" data-action="delete" title="Delete">🗑️</button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+        <div class="main-content">
+            <div class="chat-header">
+                <button class="sidebar-toggle" id="sidebarToggleTop" aria-label="Toggle Sidebar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
+                </button>
+                <div class="header-spacer"></div>
+                <button id="resetActive" class="reset-btn" title="Clear current chat">Reset</button>
+            </div>
+        <div class="chat-messages" id="chatMessages">
+            {% if active_chat.messages %}
+                {% for m in active_chat.messages %}
+                    <div class="message {{ m.role }}">
+                        <div class="avatar">{{ 'U' if m.role=='user' else 'AI' }}</div>
+                        <div class="message-content">{{ m.content }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-icon">⚡</div>
+                    <h1 class="welcome-title">Ask anything</h1>
+                    <p class="welcome-subtitle">Upload a PDF to enable RAG answers.</p>
+                </div>
+            {% endif %}
+        </div>
+            <div class="input-area">
+                <div class="input-container">
+                    <div id="attachmentsBar" class="attachments-bar">
+                        {% if active_chat.pdf_name %}
+                            <span class="attachment-chip pdf" data-type="pdf">📄 {{ active_chat.pdf_name }} <button class="chip-remove" title="Remove" aria-label="Remove PDF">✕</button></span>
+                        {% endif %}
+                        {% for im in active_chat.images %}
+                            <span class="attachment-chip image" data-type="image" data-name="{{ im.name }}" title="{{ im.name }}">🖼️ {{ im.name }} <button class="chip-remove" title="Remove" aria-label="Remove image">✕</button></span>
+                        {% endfor %}
+                    </div>
+                    <div class="input-wrapper" id="inputWrapper">
+                    <div class="input-controls">
+                        <button class="file-btn" id="pdfSelectBtn" title="Upload PDF">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>
+                        </button>
+                        <button class="file-btn" id="imageSelectBtn" title="Upload Image">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9,12C10.1,12 11,11.1 11,10C11,8.9 10.1,8 9,8C7.9,8 7,8.9 7,10C7,11.1 7.9,12 9,12M21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5M19,5H5V19H19V5M5,17.5L8.5,13.5L11,16.5L14.5,12L19,17.5H5Z"/></svg>
+                        </button>
+                    </div>
+                    <textarea class="message-input" id="messageInput" placeholder="Message..." rows="1"></textarea>
+                    <button class="send-btn" id="sendBtn" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/></svg>
+                    </button>
+                </div>
+                <input type="file" id="pdfInput" class="file-input" accept=".pdf" />
+                <input type="file" id="imageInput" class="file-input" accept="image/*" />
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

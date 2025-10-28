@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title or 'Multimodal RAG Chat' }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <script>
+        window.APP_CONFIG = {
+            chatUrl: "{{ url_for('api_chat') }}",
+            uploadPdfUrl: "{{ url_for('api_upload_pdf') }}",
+            uploadImageUrl: "{{ url_for('api_upload_image') }}",
+            newChatUrl: "{{ url_for('api_new_chat') }}",
+            deleteChatUrl: "{{ url_for('api_delete_chat') }}",
+            setActiveChatUrl: "{{ url_for('api_set_active_chat') }}",
+            renameChatUrl: "{{ url_for('api_rename_chat') }}",
+            resetActiveUrl: "{{ url_for('api_reset_active') }}"
+            , removePdfUrl: "{{ url_for('api_remove_pdf') }}"
+            , removeImageUrl: "{{ url_for('api_remove_image') }}"
+        };
+    </script>
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
