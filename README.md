@@ -39,7 +39,6 @@ User → Flask UI → (Chat Controller) → RAG Pipeline
                           └─ Optional Web Search (DuckDuckGo) → Extra Context → LLM (Gemini) Answer + Sources
 ```
 
-> Diagram placeholder: consider dropping a pretty SVG here later.
 
 ---
 
